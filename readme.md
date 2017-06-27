@@ -1,0 +1,1 @@
+This JavaScript version of an old game [Zatacka](http://zatacka.sourceforge.net/)  (which is based on DOS game called Achtung die Kurve). 
