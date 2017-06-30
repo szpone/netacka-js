@@ -12,7 +12,8 @@ var players = [
         angle: 45,
         left: false,
         right: false,
-        keys: [',', '.']
+        keys: [',', '.'],
+        color: "rgb(95, 191, 63)",
     },
     {
         position: { x: 0, y: 0 },
@@ -20,7 +21,17 @@ var players = [
         angle: 45,
         left: false,
         right: false,
-        keys: ['z', 'x']
+        keys: ['z', 'x'],
+        color: "rgb(169, 49, 185)",
+    },
+    {
+        position: { x: 0, y: 0 },
+        speed: 2,
+        angle: 45,
+        left: false,
+        right: false,
+        keys: ['q', 'w'],
+        color: "rgb(15, 255, 211)",
     }
 ];
 
@@ -31,7 +42,8 @@ function update() {
         var dx = Math.cos(player.angle / 360 * 2 * Math.PI) * player.speed;
         var dy = Math.sin(player.angle / 360 * 2 * Math.PI) * player.speed;
 
-        ctx.strokeStyle = 'rgb(0, 0, 0)';
+        ctx.strokeStyle = player.color;
+        ctx.lineWidth = 3;
         ctx.beginPath();
         player.position.x += dx;
         player.position.y += dy;
