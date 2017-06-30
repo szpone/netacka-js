@@ -5,49 +5,64 @@ var ctx = canvas.getContext('2d');
 var FPS = 60;
 setInterval(update, 1000 / FPS);
 
-var player = {
-    position: { x: 0, y: 0 },
-    speed: 2,
-    angle: 45,
-    left: false,
-    right: false,
-};
+var players = [
+    {
+        position: { x: 0, y: 0 },
+        speed: 2,
+        angle: 45,
+        left: false,
+        right: false,
+        keys: [',', '.']
+    },
+    {
+        position: { x: 0, y: 0 },
+        speed: 2,
+        angle: 45,
+        left: false,
+        right: false,
+        keys: ['z', 'x']
+    }
+];
 
 function update() {
-    var dx = Math.cos(player.angle / 360 * 2 * Math.PI) * player.speed;
-    var dy = Math.sin(player.angle / 360 * 2 * Math.PI) * player.speed;
+    for (var i = 0; i < players.length; i++) {
+        var player = players[i];
 
-    ctx.strokeStyle = 'rgb(0, 0, 0)';
-    ctx.beginPath();
-    player.position.x += dx;
-    player.position.y += dy;
-    ctx.moveTo(player.position.x, player.position.y);
-    ctx.lineTo(player.position.x + dx, player.position.y + dy);
-    ctx.stroke();
+        var dx = Math.cos(player.angle / 360 * 2 * Math.PI) * player.speed;
+        var dy = Math.sin(player.angle / 360 * 2 * Math.PI) * player.speed;
 
-    if (player.left) {
-        player.angle -= 3.5;
-    } else if (player.right) {
-        player.angle += 3.5;
+        ctx.strokeStyle = 'rgb(0, 0, 0)';
+        ctx.beginPath();
+        player.position.x += dx;
+        player.position.y += dy;
+        ctx.moveTo(player.position.x, player.position.y);
+        ctx.lineTo(player.position.x + dx, player.position.y + dy);
+        ctx.stroke();
+
+        if (player.left) {
+            player.angle -= 3.5;
+        } else if (player.right) {
+            player.angle += 3.5;
+        }
     }
 }
 
+function turn(keyName, value) {
+    for (var i = 0; i < players.length; i++) {
+        var playerKey = players[i].keys.indexOf(keyName);
+        if (playerKey == 0) {
+            players[i].left = value;
+        } else if (playerKey == 1) {
+            players[i].right = value;
+        }
+    }
+}
 
 document.addEventListener('keydown', function (event) {
-    var keyName = event.key;
-
-    if (keyName === ',') {
-        player.left = true;
-    } else if (keyName === '.') {
-        player.right = true;
-    }
+    turn(event.key, true);
 }, false);
 
 document.addEventListener('keyup', function (event) {
-    var keyName = event.key;
-    if (keyName === ',') {
-        player.left = false;
-    } else if (keyName === '.') {
-        player.right = false;
-    }
+    turn(event.key, false);
 }, false);
+
