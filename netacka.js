@@ -1,4 +1,4 @@
-// var WIDTH = 500, HEIGHT = 500;
+var WIDTH = 500, HEIGHT = 500;
 var canvas = document.querySelector("#canvas");
 var ctx = canvas.getContext('2d');
 
@@ -14,6 +14,7 @@ var players = [
         right: false,
         keys: [',', '.'],
         color: "rgb(95, 191, 63)",
+        dead: false,
     },
     {
         position: { x: 0, y: 0 },
@@ -23,6 +24,7 @@ var players = [
         right: false,
         keys: ['z', 'x'],
         color: "rgb(169, 49, 185)",
+        dead: false,
     },
     {
         position: { x: 0, y: 0 },
@@ -32,12 +34,16 @@ var players = [
         right: false,
         keys: ['q', 'w'],
         color: "rgb(15, 255, 211)",
+        dead: false,
     }
 ];
 
 function update() {
     for (var i = 0; i < players.length; i++) {
         var player = players[i];
+        if (player.dead) {
+            continue;
+        }
 
         var dx = Math.cos(player.angle / 360 * 2 * Math.PI) * player.speed;
         var dy = Math.sin(player.angle / 360 * 2 * Math.PI) * player.speed;
@@ -56,7 +62,18 @@ function update() {
         } else if (player.right) {
             player.angle += 3.5;
         }
+
+        if (player.position.x <= 0 || player.position.y <= 0
+            || player.position.x >= WIDTH || player.position.y >= HEIGHT) {
+            player.dead = true;
+        }
     }
+
+    var debug = document.getElementById('debug');
+    debug.innerText = 'player 0: ' +
+        Math.round(players[0].position.x) +
+        ', ' +
+        Math.round(players[0].position.y);
 }
 
 function turn(keyName, value) {
